@@ -33,6 +33,7 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    // FIXME cascade=\"all delete orphan"\ not working
     @PutMapping("/update/{id}")
     public User updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
@@ -41,7 +42,7 @@ public class UserController {
         user.setPdfs(userDetails.getPdfs());
         return userRepository.save(user);
     }
-    
+     
     @GetMapping("/get/{id}")
     public User getUserById(@PathVariable Long id) {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
