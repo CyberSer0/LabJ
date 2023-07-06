@@ -1,0 +1,218 @@
+{
+  "info" : {
+    "name" : "LabJ",
+    "_postman_id" : "eeda23d0-8033-40bf-9d27-70a3af8544ae",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item" : [ {
+    "name" : "DELETE user",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/user/delete/1",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/user/delete/1",
+        "port" : "8080"
+      },
+      "method" : "DELETE",
+      "header" : [ {
+        "key" : "Authorization",
+        "value" : "Basic YWRtaW46YWRtaW4=",
+        "disabled" : false
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "",
+        "disabled" : false
+      }
+    }
+  }, {
+    "name" : "GET ALL users",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/user/all",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/user/all",
+        "port" : "8080"
+      },
+      "method" : "GET",
+      "header" : [ {
+        "key" : "Authorization",
+        "value" : "Basic YWRtaW46YWRtaW4=",
+        "disabled" : false
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{ \n  \"name\" : maciek, \n  \"password\" : \"encryptedpassword\", \n  \"image\" : \"imagestring\" \n}",
+        "disabled" : false
+      }
+    }
+  }, {
+    "name" : "UPDATE user",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/user/update/3",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/user/update/3",
+        "port" : "8080"
+      },
+      "method" : "PUT",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json",
+        "disabled" : false
+      }, {
+        "key" : "Authorization",
+        "value" : "Basic YWRtaW46YWRtaW4=",
+        "disabled" : false
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{\n  \"username\" : \"postTest2\",\n  \"password\" : \"passTest\",\n  \"pdfs\" : [ ]\n}",
+        "disabled" : false
+      }
+    }
+  }, {
+    "name" : "POST user",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/user/post",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/user/post",
+        "port" : "8080"
+      },
+      "method" : "POST",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json",
+        "disabled" : false
+      }, {
+        "key" : "Authorization",
+        "value" : "Basic YWRtaW46YWRtaW4=",
+        "disabled" : false
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{\n  \"username\" : \"postTest\",\n  \"password\" : \"passTest\",\n  \"pdfs\" : [ ]\n}",
+        "disabled" : false
+      }
+    }
+  }, {
+    "name" : "POST PDF",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/pdf/post",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/pdf/post",
+        "port" : "8080"
+      },
+      "method" : "POST",
+      "header" : [ {
+        "key" : "Authorization",
+        "value" : "Basic YWRtaW46YWRtaW4=",
+        "disabled" : false
+      }, {
+        "key" : "Content-Type",
+        "value" : "multipart/form-data; boundary=----WebKitFormBoundaryxyz",
+        "disabled" : false
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "--<boundary>\nContent-Disposition: form-data; name=\"JAVA_L_01_2022_2023.\"; filename=\"testpdf\"\nContent-Type: application/pdf\n\n<binary content of the PDF file>\n--<boundary>\nContent-Disposition: form-data; name=\"1\"\n\n1\n--<boundary>--\n",
+        "disabled" : false
+      }
+    }
+  }, {
+    "name" : "GET ALL PDF",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/pdf/all",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/pdf/all",
+        "port" : "8080"
+      },
+      "method" : "GET",
+      "header" : [ {
+        "key" : "Authorization",
+        "value" : "Basic YWRtaW46YWRtaW4=",
+        "disabled" : false
+      }, {
+        "key" : "Content-Type",
+        "value" : "application/json",
+        "disabled" : false
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{\n  \"author\" : {\n    \"id\" : 1\n  },\n  \"content\" : \"<pdf content>\"\n}",
+        "disabled" : false
+      }
+    }
+  }, {
+    "name" : "DELETE PDF",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/pdf/delete/1",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/pdf/delete/1",
+        "port" : "8080"
+      },
+      "method" : "DELETE",
+      "header" : [ {
+        "key" : "Authorization",
+        "value" : "Basic YWRtaW46YWRtaW4=",
+        "disabled" : false
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "",
+        "disabled" : false
+      }
+    }
+  }, {
+    "name" : "UPDATE PDF",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/pdf/delete/1",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/pdf/delete/1",
+        "port" : "8080"
+      },
+      "method" : "PUT",
+      "header" : [ {
+        "key" : "Authorization",
+        "value" : "Basic YWRtaW46YWRtaW4=",
+        "disabled" : false
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "",
+        "disabled" : false
+      }
+    }
+  }, {
+    "name" : "Upload",
+    "request" : {
+      "url" : {
+        "raw" : "http://localhost:8080/pdf/update",
+        "protocol" : "http",
+        "host" : "localhost",
+        "path" : "/pdf/update",
+        "port" : "8080"
+      },
+      "method" : "GET",
+      "header" : [ ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "--<boundary>\nContent-Disposition: form-data; name=\"JAVA_L_01_2022_2023.\"; filename=\"testpdf\"\nContent-Type: application/pdf\n\n<binary content of the PDF file>\n--<boundary>\nContent-Disposition: form-data; name=\"1\"\n\n1\n--<boundary>--",
+        "disabled" : false
+      }
+    }
+  } ]
+}
