@@ -1,55 +1,66 @@
 package dev.cyberser.labj;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable; 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pdf")
 public class PDFController {
-    @Autowired
-    private PDFRepository pdfRepository;
 
-    // PDFS ENDPOINTS
+    private final PDFRepository pdfRepository;
+    private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
+
+    @Autowired
+    public PDFController(PDFRepository pdfRepository, UserRepository userRepository, FileStorageService fileStorageService) {
+        this.pdfRepository = pdfRepository;
+        this.userRepository = userRepository;
+        this.fileStorageService = fileStorageService;
+    }
+
     @GetMapping("/all")
     public List<PDF> getPdfs() {
         return pdfRepository.findAll();
     }
 
-    // USER ENDPOINTS
-    @PostMapping(value = "/post", consumes = "application/json")
-    public PDF createPdf(@Valid @RequestBody PDF pdf) {
-        return pdfRepository.save(pdf);
+    @PostMapping(value = "/post")
+    public String createPdf(@RequestParam("file") MultipartFile file, @RequestParam("authorId") Long authorId) throws IOException {
+        User author = getUserById(authorId);
+        return fileStorageService.storeFile(file, authorId);
     }
 
-    @PutMapping("/update/{id}")
-    public PDF updatePdf(@PathVariable Long id, @Valid @RequestBody PDF pdfDetails) {
-        PDF pdf = pdfRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("PDF", "id", id));
-        pdf.setAuthor(pdfDetails.getAuthor());
-        pdf.setContent(pdfDetails.getContent());
-        return pdfRepository.save(pdf);
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadPDF(@RequestParam("file") MultipartFile file, @RequestParam("authorId") Long authorId) {
+        String filePath = fileStorageService.storeFile(file, authorId);
+
+        // Optionally, you can return the stored file path or any success message
+        return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully. Path: " + filePath);
     }
-    
+
     @GetMapping("/get/{id}")
-    public PDF getPdfById(@PathVariable Long id) {
-        return pdfRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("PDF", "id", id));
+    public ResponseEntity<ByteArrayResource> downloadPdf(@PathVariable Long id) {
+        PDF pdf = fileStorageService.getFileById(id);
+        ByteArrayResource resource = new ByteArrayResource(pdf.getContent());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + pdf.getFileName())
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdf.getContent().length)
+                .body(resource);
     }
-    
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deletePdf(@PathVariable Long id) {
-        PDF pdf = pdfRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("PDF", "id", id));
-        pdfRepository.delete(pdf);
-        return ResponseEntity.ok().build();
+
+    private User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     }
 }

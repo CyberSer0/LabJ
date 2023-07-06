@@ -33,13 +33,21 @@ public class UserController {
         return userRepository.save(user);
     }
 
-    // FIXME cascade=\"all delete orphan"\ not working
     @PutMapping("/update/{id}")
     public User updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
         user.setUsername(userDetails.getUsername());
-        user.setPassword(userDetails.getPassword());
-        user.setPdfs(userDetails.getPdfs());
+        String newPass = userDetails.getPassword();
+        if (newPass != null) user.setPassword(userDetails.getPassword());
+        
+        List<PDF> updatedPDFs = userDetails.getPdfs();
+        if (updatedPDFs != null) {
+            user.getPdfs().clear();
+            for (PDF pdf : updatedPDFs) {
+                pdf.setAuthor(user);
+                user.getPdfs().add(pdf);
+            }
+        }
         return userRepository.save(user);
     }
      

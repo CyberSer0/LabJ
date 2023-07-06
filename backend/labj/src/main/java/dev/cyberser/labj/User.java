@@ -64,6 +64,7 @@ public class User {
     }
 
     public void setPassword(String password) {
+        this.password = password;
         this.passwordHash = passwordEncoder.encode(password);
     }
 
